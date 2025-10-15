@@ -1,59 +1,149 @@
-# CarInventoryFrontend
+# Car Inventory Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.6.
+Plantilla base de Angular 20 con TypeScript, Tailwind CSS 4, ESLint y Prettier.
 
-## Development server
+Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 20.3.6.
 
-To start a local development server, run:
+## Características
 
-```bash
-ng serve
-```
+- **Angular 20** - Standalone components y Signals
+- **TypeScript 5.9** - Configuración estricta
+- **Tailwind CSS 4** - Utility-first CSS
+- **ESLint + Prettier** - Linting y formateo
+- **Karma + Jasmine** - Testing unitario
+- **Path Aliases** - Imports limpios (@app, @core, @shared, @features)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requisitos
 
-## Code scaffolding
+- Node.js 18+
+- npm
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Inicio rápido
 
 ```bash
-ng generate --help
+# Instalar dependencias
+npm install
+
+# Servidor de desarrollo (http://localhost:4200)
+npm start
+
+# Build de producción
+npm run build
 ```
 
-## Building
+## Scripts disponibles
 
-To build the project run:
+| Comando | Descripción |
+|---------|-------------|
+| `npm start` | Servidor de desarrollo |
+| `npm run build` | Build del proyecto |
+| `npm test` | Tests unitarios |
+| `npm run lint` | Verificar código |
+| `npm run lint:fix` | Corregir problemas de lint |
+| `npm run format` | Formatear código |
+| `npm run format:check` | Verificar formato |
 
-```bash
-ng build
+## Estructura del proyecto
+
+```
+src/
+├── app/
+│   ├── core/           # Servicios globales, guards, interceptors
+│   ├── shared/         # Componentes, pipes, directivas compartidas
+│   ├── features/       # Módulos de funcionalidades
+│   ├── app.ts          # Componente raíz
+│   ├── app.config.ts   # Configuración de la app
+│   └── app.routes.ts   # Rutas principales
+├── environments/       # Variables de entorno
+└── styles.css         # Estilos globales
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Tailwind CSS
 
-## Running unit tests
+Personaliza el tema en `tailwind.config.js`:
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```javascript
+theme: {
+  extend: {
+    colors: {
+      primary: { /* tus colores */ },
+    },
+  },
+}
 ```
 
-## Running end-to-end tests
+## Convenciones de código
 
-For end-to-end (e2e) testing, run:
+### Componentes
+- Usa standalone components
+- Usa `signal()` para estado reactivo
+- Usa `computed()` para valores derivados
+- Usa `input()` y `output()` en lugar de decoradores
+- Agrega `changeDetection: ChangeDetectionStrategy.OnPush`
 
-```bash
-ng e2e
+```typescript
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+
+@Component({
+  selector: 'app-example',
+  template: `
+    @if (count() > 0) {
+      <p>Count: {{ count() }}</p>
+    }
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ExampleComponent {
+  protected readonly count = signal(0);
+}
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### Templates
+- Usa control flow nativo: `@if`, `@for`, `@switch`
+- Usa `[class]` y `[style]` en lugar de `ngClass` y `ngStyle`
 
-## Additional Resources
+### Servicios
+- Usa `inject()` en lugar de constructor injection
+- Usa `providedIn: 'root'` para servicios singleton
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```typescript
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({ providedIn: 'root' })
+export class DataService {
+  private readonly http = inject(HttpClient);
+}
+```
+
+## Path Aliases
+
+Usa imports limpios en lugar de rutas relativas:
+
+```typescript
+import { ButtonComponent } from '@shared/components';
+import { AuthService } from '@core/services';
+import { environment } from '@environments/environment';
+```
+
+## Variables de entorno
+
+Configura variables en `src/environments/`:
+- `environment.development.ts` - Desarrollo
+- `environment.ts` - Producción
+
+## VS Code
+
+Extensiones recomendadas:
+- Angular Language Service
+- ESLint
+- Prettier
+- Tailwind CSS IntelliSense
+
+El proyecto incluye formateo automático al guardar.
+
+## Recursos
+
+- [Angular Docs](https://angular.dev)
+- [Tailwind CSS](https://tailwindcss.com)
+- [TypeScript](https://www.typescriptlang.org/docs)
