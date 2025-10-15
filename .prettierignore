@@ -1,0 +1,17 @@
+# Dependencias
+node_modules
+
+# Build
+dist
+.angular
+coverage
+
+# Archivos de configuración
+*.config.js
+*.conf.js
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode
+.idea
