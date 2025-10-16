@@ -5,7 +5,8 @@
       "Read(//c/Users/higin/OneDrive/Imágenes/Pictures/Screenshots/**)",
       "Bash(npm run lint:fix:*)",
       "Bash(npm run build:*)",
-      "mcp__angular-cli__search_documentation"
+      "mcp__angular-cli__search_documentation",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

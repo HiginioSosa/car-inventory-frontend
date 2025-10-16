@@ -78,8 +78,6 @@ import { AuthService } from '@core/services';
 - `@features/*` - Componentes de features/páginas
 - `@environments/*` - Configuración de entornos
 
-Ver más detalles en: `docs/PATH_ALIASES_MIGRATION.md`
-
 ### Variables de Entorno
 
 El proyecto utiliza dos archivos de entorno:
@@ -302,72 +300,6 @@ export class ExampleComponent {
 - Usa `inject()` en lugar de constructor injection
 - Usa `providedIn: 'root'` para servicios singleton
 
-## 📈 Mejoras Recientes
-
-### Seguridad
-- ✅ Corregida importación de environment para producción
-- ✅ Documentación completa de headers de seguridad (CSP, HSTS, etc.)
-- ✅ Manejo mejorado de errores con notificaciones al usuario
-- 📄 Guía de migración a httpOnly cookies documentada
-
-### Performance
-- ✅ Implementado auto-unsubscribe con `takeUntilDestroyed()`
-- ✅ Optimización de re-renders con `track` en `@for`
-- ✅ Change Detection OnPush en todos los componentes
-
-### Experiencia de Usuario
-- ✅ Sistema global de notificaciones (success, error, warning, info)
-- ✅ Mejores mensajes de error
-- ✅ Notificación de sesión expirada
-
-**Ver más detalles:** `docs/MEJORAS_IMPLEMENTADAS.md`
-
-## 🔒 Seguridad
-
-Para configurar correctamente la seguridad en producción, consulta:
-- **Guía completa:** `docs/SECURITY.md`
-- Configuración de headers HTTP de seguridad
-- CSP, CORS, HSTS, Rate Limiting
-- Checklist pre-producción
-
-## 📚 Documentación Adicional
-
-- **API Reference**: `docs/API_REFERENCE.md`
-- **Guía de Seguridad**: `docs/SECURITY.md`
-- **Mejoras Implementadas**: `docs/MEJORAS_IMPLEMENTADAS.md`
-
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
-
-## 📝 Licencia
-
-Este proyecto está bajo la Licencia MIT.
-
 ## 👨‍💻 Autor
 
-**Tu Nombre** - [GitHub](https://github.com/yourusername)
-
----
-
-**Última actualización:** 16 de octubre de 2025  
-**Versión de Angular:** 20.3.0  
-**Estado:** ✅ Optimizado y en producción
-
-```typescript
-import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-
-@Injectable({ providedIn: 'root' })
-export class DataService {
-  private readonly http = inject(HttpClient);
-}
-```
-
-## Créditos
-
-Desarrollado siguiendo las mejores prácticas de Angular 20 y las especificaciones de la API REST del proyecto Car Inventory Backend.
+**José Higinio Sosa Vázquez** - [GitHub](https://github.com/HiginioSosa)
