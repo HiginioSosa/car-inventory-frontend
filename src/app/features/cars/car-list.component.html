@@ -26,13 +26,6 @@
           />
         </svg>
         Filtros
-        @if (hasFilters()) {
-          <span
-            class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium gradient-primary text-white animate-scale-in"
-          >
-            Activos
-          </span>
-        }
       </button>
       <a
         routerLink="/cars/new"
@@ -48,11 +41,34 @@
 
   @if (showFilters()) {
     <div class="mt-6 bg-white rounded-xl shadow-lg p-6 border border-gray-100 animate-slide-down">
-      <div class="flex items-center mb-4">
-        <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-        </svg>
-        <h3 class="text-lg font-semibold text-gray-900">Filtros de Búsqueda</h3>
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center">
+          <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900">Filtros de Búsqueda</h3>
+        </div>
+        <button
+          type="button"
+          (click)="clearFilters()"
+          [disabled]="!hasFilters()"
+          class="inline-flex items-center px-3 py-1.5 border rounded-lg text-sm font-medium smooth-transition cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2"
+          [class.border-red-300]="hasFilters()"
+          [class.text-red-700]="hasFilters()"
+          [class.bg-red-50]="hasFilters()"
+          [class.hover:bg-red-100]="hasFilters()"
+          [class.hover:border-red-400]="hasFilters()"
+          [class.focus:ring-red-500]="hasFilters()"
+          [class.border-gray-200]="!hasFilters()"
+          [class.text-gray-400]="!hasFilters()"
+          [class.bg-gray-50]="!hasFilters()"
+          [class.cursor-not-allowed]="!hasFilters()"
+        >
+          <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+          Limpiar
+        </button>
       </div>
       <form [formGroup]="filterForm" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <div class="smooth-transition">
@@ -84,7 +100,6 @@
           <select
             id="modelo"
             formControlName="modelo"
-            [disabled]="!filterForm.get('marca')?.value"
             class="block w-full px-4 py-2.5 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm disabled:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-500 smooth-transition hover:border-indigo-300"
           >
             <option value="">Todos los modelos</option>
@@ -159,21 +174,6 @@
             placeholder="Ej: Rojo, Azul, Negro..."
             class="block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm smooth-transition hover:border-indigo-300"
           />
-        </div>
-
-        <div class="sm:col-span-2 lg:col-span-3 flex justify-end">
-          @if (hasFilters()) {
-            <button
-              type="button"
-              (click)="clearFilters()"
-              class="px-6 py-2.5 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 hover-lift smooth-transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <svg class="inline w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              Limpiar Filtros
-            </button>
-          }
         </div>
       </form>
     </div>

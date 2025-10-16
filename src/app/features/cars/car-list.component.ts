@@ -49,9 +49,9 @@ export class CarListComponent implements OnInit {
   protected readonly showViewModal = signal(false);
   protected readonly Math = Math;
 
-  protected readonly hasFilters = computed(() => {
+  protected hasFilters(): boolean {
     const values = this.filterForm.value;
-    return !!(
+    return Boolean(
       values.marca ||
       values.modelo ||
       values.anio ||
@@ -59,7 +59,7 @@ export class CarListComponent implements OnInit {
       values.maxPrecio ||
       values.color
     );
-  });
+  }
 
   ngOnInit(): void {
     this.loadCatalogs();
@@ -82,16 +82,21 @@ export class CarListComponent implements OnInit {
   }
 
   private setupFilterListeners(): void {
+    // Inicialmente deshabilitar el control de modelo
+    this.filterForm.get('modelo')?.disable();
+
     this.filterForm.get('marca')?.valueChanges.subscribe((marca) => {
       if (marca) {
         this.catalogService.getModels(marca).subscribe({
           next: (response) => {
             this.models.set(response.data.modelos);
+            this.filterForm.get('modelo')?.enable();
           },
         });
       } else {
         this.models.set([]);
         this.filterForm.patchValue({ modelo: '' });
+        this.filterForm.get('modelo')?.disable();
       }
     });
 
