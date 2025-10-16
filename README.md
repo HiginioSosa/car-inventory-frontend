@@ -42,11 +42,20 @@ Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-
 
 ## 📋 Requisitos Previos
 
+### Opción 1: Desarrollo Local
 - Node.js 18.x o superior
 - npm 9.x o superior
 - Backend API corriendo en `http://localhost:3000`
 
+### Opción 2: Docker (Recomendado) 🐳
+- Docker 22.x o superior
+- Docker Compose 2.x o superior
+
+**Ver [DOCKER.md](./DOCKER.md) para instrucciones completas de Docker.**
+
 ## 🚀 Instalación
+
+### Desarrollo Local
 
 ```bash
 # Clonar el repositorio
@@ -55,6 +64,20 @@ cd car-inventory-frontend
 
 # Instalar dependencias
 npm install
+```
+
+### Con Docker
+
+```bash
+# Clonar el repositorio
+git clone <repository-url>
+cd car-inventory-frontend
+
+# Levantar Frontend
+docker-compose up
+
+# La aplicación estará disponible en:
+# Frontend: http://localhost:4200
 ```
 
 ## ⚙️ Configuración

@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  # Frontend Angular application
+  frontend:
+    build: .
+    container_name: car-inventory-frontend
+    ports:
+      - "4200:4200"
+    environment:
+      NODE_ENV: development
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - car-inventory-network

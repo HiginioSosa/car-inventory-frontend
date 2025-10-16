@@ -1,0 +1,36 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+.angular/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Test files
+coverage/
+.nyc_output/
+
+# Environment files (if they contain secrets)
+.env
+.env.local
+
+# Documentation
+docs/
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
