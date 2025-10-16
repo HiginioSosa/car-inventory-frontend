@@ -40,7 +40,7 @@ export class CarFormComponent implements OnInit {
 
   protected readonly carForm = new FormGroup({
     marca: new FormControl('', [Validators.required]),
-    modelo: new FormControl('', [Validators.required]),
+    modelo: new FormControl({ value: '', disabled: true }, [Validators.required]),
     anio: new FormControl('', [Validators.required]),
     precio: new FormControl('', [Validators.required, Validators.min(0)]),
     kilometraje: new FormControl('', [Validators.required, Validators.min(101)]),
@@ -75,13 +75,18 @@ export class CarFormComponent implements OnInit {
 
   private setupMarcaListener(): void {
     this.carForm.get('marca')?.valueChanges.subscribe((marca) => {
+      const modeloControl = this.carForm.get('modelo');
+
       if (marca) {
         this.catalogService.getModels(marca).subscribe({
           next: (response) => {
             this.models.set(response.data.modelos);
 
+            // Enable modelo field
+            modeloControl?.enable();
+
             // Reset modelo if not in the new list
-            const currentModelo = this.carForm.get('modelo')?.value;
+            const currentModelo = modeloControl?.value;
             if (currentModelo && !response.data.modelos.includes(currentModelo)) {
               this.carForm.patchValue({ modelo: '' });
             }
@@ -90,6 +95,8 @@ export class CarFormComponent implements OnInit {
       } else {
         this.models.set([]);
         this.carForm.patchValue({ modelo: '' });
+        // Disable modelo field when no brand is selected
+        modeloControl?.disable();
       }
     });
   }
@@ -106,6 +113,9 @@ export class CarFormComponent implements OnInit {
           this.catalogService.getModels(car.marca).subscribe({
             next: (modelResponse) => {
               this.models.set(modelResponse.data.modelos);
+
+              // Enable modelo control before setting value
+              this.carForm.get('modelo')?.enable();
 
               // Then populate form
               this.carForm.patchValue({
@@ -221,7 +231,8 @@ export class CarFormComponent implements OnInit {
     const carId = this.currentCar()?._id;
     if (!carId) return;
 
-    const formValue = this.carForm.value;
+    // Use getRawValue() to include disabled fields
+    const formValue = this.carForm.getRawValue();
     const carData: UpdateCarRequest = {};
 
     // Only include changed fields
