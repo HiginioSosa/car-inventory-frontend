@@ -9,9 +9,16 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      // Solo cerrar sesión si es un error 401 relacionado con autenticación
       if (error.status === 401) {
-        localStorage.removeItem('auth_token');
-        router.navigate(['/login']);
+        // Verificar si es una ruta de autenticación o perfil
+        const isAuthEndpoint = req.url.includes('/auth/');
+
+        if (isAuthEndpoint && !req.url.includes('/login') && !req.url.includes('/register')) {
+          // Solo limpiar sesión si el token es inválido en endpoints protegidos
+          localStorage.removeItem('auth_token');
+          router.navigate(['/login']);
+        }
       }
 
       const apiError: ApiError = error.error || {

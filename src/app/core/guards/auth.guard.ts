@@ -6,7 +6,10 @@ export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (authService.isAuthenticated()) {
+  // Verificar si hay token en localStorage
+  const token = authService.getToken();
+
+  if (token) {
     return true;
   }
 
@@ -18,7 +21,10 @@ export const guestGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  if (!authService.isAuthenticated()) {
+  // Verificar si hay token en localStorage
+  const token = authService.getToken();
+
+  if (!token) {
     return true;
   }
 

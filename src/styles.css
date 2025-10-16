@@ -55,7 +55,7 @@
 
 /* Clases de animación */
 .animate-fade-in {
-  animation: fadeIn 300ms ease-in-out;
+  animation: fadeIn 400ms ease-out forwards;
 }
 
 .animate-slide-up {

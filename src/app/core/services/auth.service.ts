@@ -69,8 +69,19 @@ export class AuthService {
     const token = this.getToken();
     if (token) {
       this.getProfile().subscribe({
-        error: () => {
-          this.logout();
+        next: (response) => {
+          // Usuario cargado correctamente
+          this.currentUser.set(response.data);
+        },
+        error: (error) => {
+          // Solo hacer logout si el token es realmente inválido (401)
+          if (error.status === 401) {
+            console.warn('Token inválido o expirado, cerrando sesión...');
+            this.logout();
+          } else {
+            // Para otros errores, mantener la sesión pero marcar que hay un problema
+            console.error('Error al cargar el perfil del usuario:', error);
+          }
         },
       });
     }
