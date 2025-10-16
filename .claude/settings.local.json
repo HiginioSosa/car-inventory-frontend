@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__angular-cli__get_best_practices",
+      "Read(//c/Users/higin/OneDrive/Imágenes/Pictures/Screenshots/**)",
+      "Bash(npm run lint:fix:*)",
+      "Bash(npm run build:*)",
+      "mcp__angular-cli__search_documentation"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

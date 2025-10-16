@@ -1,0 +1,27 @@
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
+import { ApiError } from '../models';
+
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+
+  return next(req).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        localStorage.removeItem('auth_token');
+        router.navigate(['/login']);
+      }
+
+      const apiError: ApiError = error.error || {
+        status: error.status,
+        name: error.statusText,
+        message: error.message,
+        customMessage: 'Ha ocurrido un error. Por favor intente nuevamente.',
+      };
+
+      return throwError(() => apiError);
+    })
+  );
+};
