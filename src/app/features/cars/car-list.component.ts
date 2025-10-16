@@ -1,11 +1,4 @@
-import {
-  Component,
-  signal,
-  inject,
-  OnInit,
-  ChangeDetectionStrategy,
-  computed,
-} from '@angular/core';
+import { Component, signal, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -53,11 +46,11 @@ export class CarListComponent implements OnInit {
     const values = this.filterForm.value;
     return Boolean(
       values.marca ||
-      values.modelo ||
-      values.anio ||
-      values.minPrecio ||
-      values.maxPrecio ||
-      values.color
+        values.modelo ||
+        values.anio ||
+        values.minPrecio ||
+        values.maxPrecio ||
+        values.color
     );
   }
 
@@ -102,12 +95,15 @@ export class CarListComponent implements OnInit {
 
     // Escuchar cambios solo en los filtros (no en page y limit)
     const filterControls = ['marca', 'modelo', 'anio', 'minPrecio', 'maxPrecio', 'color'];
-    filterControls.forEach(controlName => {
-      this.filterForm.get(controlName)?.valueChanges.pipe(debounceTime(500)).subscribe(() => {
-        // Resetear a página 1 cuando cambian los filtros
-        this.filterForm.patchValue({ page: 1 }, { emitEvent: false });
-        this.loadCars();
-      });
+    filterControls.forEach((controlName) => {
+      this.filterForm
+        .get(controlName)
+        ?.valueChanges.pipe(debounceTime(500))
+        .subscribe(() => {
+          // Resetear a página 1 cuando cambian los filtros
+          this.filterForm.patchValue({ page: 1 }, { emitEvent: false });
+          this.loadCars();
+        });
     });
   }
 
@@ -217,98 +213,98 @@ export class CarListComponent implements OnInit {
 
     const colorMap: { [key: string]: string } = {
       // Rojos
-      'rojo': 'bg-red-100 text-red-800',
-      'red': 'bg-red-100 text-red-800',
-      'carmesí': 'bg-red-200 text-red-900',
-      'crimson': 'bg-red-200 text-red-900',
-      'vino': 'bg-red-900 text-red-100',
-      'burgundy': 'bg-red-900 text-red-100',
+      rojo: 'bg-red-100 text-red-800',
+      red: 'bg-red-100 text-red-800',
+      carmesí: 'bg-red-200 text-red-900',
+      crimson: 'bg-red-200 text-red-900',
+      vino: 'bg-red-900 text-red-100',
+      burgundy: 'bg-red-900 text-red-100',
 
       // Azules
-      'azul': 'bg-blue-100 text-blue-800',
-      'blue': 'bg-blue-100 text-blue-800',
-      'marino': 'bg-blue-900 text-blue-100',
-      'navy': 'bg-blue-900 text-blue-100',
-      'celeste': 'bg-sky-100 text-sky-800',
-      'sky': 'bg-sky-100 text-sky-800',
-      'turquesa': 'bg-cyan-100 text-cyan-800',
-      'turquoise': 'bg-cyan-100 text-cyan-800',
-      'aqua': 'bg-cyan-100 text-cyan-800',
+      azul: 'bg-blue-100 text-blue-800',
+      blue: 'bg-blue-100 text-blue-800',
+      marino: 'bg-blue-900 text-blue-100',
+      navy: 'bg-blue-900 text-blue-100',
+      celeste: 'bg-sky-100 text-sky-800',
+      sky: 'bg-sky-100 text-sky-800',
+      turquesa: 'bg-cyan-100 text-cyan-800',
+      turquoise: 'bg-cyan-100 text-cyan-800',
+      aqua: 'bg-cyan-100 text-cyan-800',
 
       // Verdes
-      'verde': 'bg-green-100 text-green-800',
-      'green': 'bg-green-100 text-green-800',
-      'esmeralda': 'bg-emerald-100 text-emerald-800',
-      'emerald': 'bg-emerald-100 text-emerald-800',
-      'lima': 'bg-lime-100 text-lime-800',
-      'lime': 'bg-lime-100 text-lime-800',
-      'oliva': 'bg-green-700 text-green-100',
-      'olive': 'bg-green-700 text-green-100',
+      verde: 'bg-green-100 text-green-800',
+      green: 'bg-green-100 text-green-800',
+      esmeralda: 'bg-emerald-100 text-emerald-800',
+      emerald: 'bg-emerald-100 text-emerald-800',
+      lima: 'bg-lime-100 text-lime-800',
+      lime: 'bg-lime-100 text-lime-800',
+      oliva: 'bg-green-700 text-green-100',
+      olive: 'bg-green-700 text-green-100',
 
       // Amarillos y Dorados
-      'amarillo': 'bg-yellow-100 text-yellow-800',
-      'yellow': 'bg-yellow-100 text-yellow-800',
-      'dorado': 'bg-amber-200 text-amber-900',
-      'gold': 'bg-amber-200 text-amber-900',
-      'oro': 'bg-amber-200 text-amber-900',
-      'champagne': 'bg-yellow-50 text-yellow-800',
-      'champaña': 'bg-yellow-50 text-yellow-800',
+      amarillo: 'bg-yellow-100 text-yellow-800',
+      yellow: 'bg-yellow-100 text-yellow-800',
+      dorado: 'bg-amber-200 text-amber-900',
+      gold: 'bg-amber-200 text-amber-900',
+      oro: 'bg-amber-200 text-amber-900',
+      champagne: 'bg-yellow-50 text-yellow-800',
+      champaña: 'bg-yellow-50 text-yellow-800',
 
       // Naranjas
-      'naranja': 'bg-orange-100 text-orange-800',
-      'orange': 'bg-orange-100 text-orange-800',
-      'coral': 'bg-orange-200 text-orange-900',
-      'durazno': 'bg-orange-100 text-orange-700',
-      'peach': 'bg-orange-100 text-orange-700',
+      naranja: 'bg-orange-100 text-orange-800',
+      orange: 'bg-orange-100 text-orange-800',
+      coral: 'bg-orange-200 text-orange-900',
+      durazno: 'bg-orange-100 text-orange-700',
+      peach: 'bg-orange-100 text-orange-700',
 
       // Morados
-      'morado': 'bg-purple-100 text-purple-800',
-      'purple': 'bg-purple-100 text-purple-800',
-      'violeta': 'bg-violet-100 text-violet-800',
-      'violet': 'bg-violet-100 text-violet-800',
-      'lila': 'bg-purple-200 text-purple-800',
-      'lavanda': 'bg-purple-100 text-purple-700',
-      'lavender': 'bg-purple-100 text-purple-700',
+      morado: 'bg-purple-100 text-purple-800',
+      purple: 'bg-purple-100 text-purple-800',
+      violeta: 'bg-violet-100 text-violet-800',
+      violet: 'bg-violet-100 text-violet-800',
+      lila: 'bg-purple-200 text-purple-800',
+      lavanda: 'bg-purple-100 text-purple-700',
+      lavender: 'bg-purple-100 text-purple-700',
 
       // Rosas
-      'rosa': 'bg-pink-100 text-pink-800',
-      'pink': 'bg-pink-100 text-pink-800',
-      'magenta': 'bg-fuchsia-100 text-fuchsia-800',
-      'fucsia': 'bg-fuchsia-100 text-fuchsia-800',
+      rosa: 'bg-pink-100 text-pink-800',
+      pink: 'bg-pink-100 text-pink-800',
+      magenta: 'bg-fuchsia-100 text-fuchsia-800',
+      fucsia: 'bg-fuchsia-100 text-fuchsia-800',
 
       // Negros y Grises
-      'negro': 'bg-gray-800 text-white',
-      'black': 'bg-gray-800 text-white',
-      'gris': 'bg-gray-200 text-gray-800',
-      'gray': 'bg-gray-200 text-gray-800',
-      'grafito': 'bg-gray-600 text-gray-100',
-      'graphite': 'bg-gray-600 text-gray-100',
-      'carbón': 'bg-gray-700 text-gray-100',
-      'charcoal': 'bg-gray-700 text-gray-100',
-      'plata': 'bg-gray-300 text-gray-800',
-      'silver': 'bg-gray-300 text-gray-800',
-      'plateado': 'bg-gray-300 text-gray-800',
+      negro: 'bg-gray-800 text-white',
+      black: 'bg-gray-800 text-white',
+      gris: 'bg-gray-200 text-gray-800',
+      gray: 'bg-gray-200 text-gray-800',
+      grafito: 'bg-gray-600 text-gray-100',
+      graphite: 'bg-gray-600 text-gray-100',
+      carbón: 'bg-gray-700 text-gray-100',
+      charcoal: 'bg-gray-700 text-gray-100',
+      plata: 'bg-gray-300 text-gray-800',
+      silver: 'bg-gray-300 text-gray-800',
+      plateado: 'bg-gray-300 text-gray-800',
 
       // Blancos y Cremas
-      'blanco': 'bg-gray-50 text-gray-800 border border-gray-300',
-      'white': 'bg-gray-50 text-gray-800 border border-gray-300',
-      'perla': 'bg-gray-100 text-gray-700 border border-gray-200',
-      'pearl': 'bg-gray-100 text-gray-700 border border-gray-200',
-      'crema': 'bg-amber-50 text-amber-800',
-      'cream': 'bg-amber-50 text-amber-800',
-      'marfil': 'bg-yellow-50 text-yellow-900',
-      'ivory': 'bg-yellow-50 text-yellow-900',
+      blanco: 'bg-gray-50 text-gray-800 border border-gray-300',
+      white: 'bg-gray-50 text-gray-800 border border-gray-300',
+      perla: 'bg-gray-100 text-gray-700 border border-gray-200',
+      pearl: 'bg-gray-100 text-gray-700 border border-gray-200',
+      crema: 'bg-amber-50 text-amber-800',
+      cream: 'bg-amber-50 text-amber-800',
+      marfil: 'bg-yellow-50 text-yellow-900',
+      ivory: 'bg-yellow-50 text-yellow-900',
 
       // Marrones y Beige
-      'marrón': 'bg-amber-100 text-amber-800',
-      'brown': 'bg-amber-100 text-amber-800',
-      'café': 'bg-amber-100 text-amber-800',
-      'coffee': 'bg-amber-100 text-amber-800',
-      'beige': 'bg-amber-50 text-amber-800',
-      'bronce': 'bg-orange-800 text-orange-100',
-      'bronze': 'bg-orange-800 text-orange-100',
-      'cobre': 'bg-orange-700 text-orange-100',
-      'copper': 'bg-orange-700 text-orange-100',
+      marrón: 'bg-amber-100 text-amber-800',
+      brown: 'bg-amber-100 text-amber-800',
+      café: 'bg-amber-100 text-amber-800',
+      coffee: 'bg-amber-100 text-amber-800',
+      beige: 'bg-amber-50 text-amber-800',
+      bronce: 'bg-orange-800 text-orange-100',
+      bronze: 'bg-orange-800 text-orange-100',
+      cobre: 'bg-orange-700 text-orange-100',
+      copper: 'bg-orange-700 text-orange-100',
     };
 
     for (const [key, value] of Object.entries(colorMap)) {

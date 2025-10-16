@@ -95,7 +95,9 @@
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
+  transition:
+    opacity 200ms ease-in-out,
+    transform 200ms ease-in-out;
   z-index: 1000;
 }
 
@@ -112,7 +114,9 @@
   border-top: 6px solid #667eea;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 200ms ease-in-out, transform 200ms ease-in-out;
+  transition:
+    opacity 200ms ease-in-out,
+    transform 200ms ease-in-out;
   z-index: 1000;
 }
 
@@ -157,10 +161,14 @@ select:focus {
 
 /* Hover effects modernos */
 .hover-lift {
-  transition: transform 200ms ease-in-out, box-shadow 200ms ease-in-out;
+  transition:
+    transform 200ms ease-in-out,
+    box-shadow 200ms ease-in-out;
 }
 
 .hover-lift:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 10px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
