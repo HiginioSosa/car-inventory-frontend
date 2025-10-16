@@ -2,10 +2,12 @@ import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
-import { ApiError } from '../models';
+import { ApiError } from '@core/models';
+import { NotificationService } from '@core/services/notification.service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
+  const notificationService = inject(NotificationService);
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -17,6 +19,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         if (isAuthEndpoint && !req.url.includes('/login') && !req.url.includes('/register')) {
           // Solo limpiar sesión si el token es inválido en endpoints protegidos
           localStorage.removeItem('auth_token');
+          notificationService.warning('Tu sesión ha expirado. Por favor inicia sesión nuevamente.');
           router.navigate(['/login']);
         }
       }
@@ -27,6 +30,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         message: error.message,
         customMessage: 'Ha ocurrido un error. Por favor intente nuevamente.',
       };
+
+      // Mostrar notificación solo para errores no relacionados con autenticación
+      if (error.status !== 401) {
+        notificationService.error(apiError.customMessage || apiError.message);
+      }
 
       return throwError(() => apiError);
     })

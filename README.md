@@ -1,23 +1,38 @@
 # Car Inventory Frontend
 
-Aplicación web moderna para la gestión de inventario de autos, desarrollada con Angular 20, Tailwind CSS 4 y TypeScript, siguiendo las mejores prácticas de desarrollo.
+Aplicación web moderna para la gestión de inventario de autos, desarrollada con Angular 20, Tailwind CSS 4 y TypeScript, siguiendo las mejores prácticas de desarrollo y seguridad.
 
 Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-cli) versión 20.3.6.
 
-## Características
+## ✨ Características Principales
 
+### Funcionalidad
 - **Autenticación JWT**: Sistema completo de login/registro con manejo seguro de tokens
-- **CRUD de Autos**: Gestión completa de inventario con validaciones
+- **CRUD de Autos**: Gestión completa de inventario con validaciones robustas
 - **Filtros Avanzados**: Búsqueda por marca, modelo, año, rango de precios y color
 - **Paginación**: Navegación eficiente a través de grandes conjuntos de datos
 - **Upload de Imágenes**: Soporte para fotografías de autos (JPG, PNG, WebP, max 5MB)
 - **Catálogos Dinámicos**: Marcas, modelos (según marca) y años
+- **Sistema de Notificaciones**: Alertas visuales para success, error, warning e info
 - **Diseño Responsivo**: Interfaz adaptativa para todos los dispositivos
+
+### Arquitectura y Performance
 - **Lazy Loading**: Carga optimizada de componentes
 - **Signals**: Estado reactivo con Angular Signals
 - **Standalone Components**: Arquitectura moderna sin NgModules
+- **Change Detection OnPush**: Optimización de rendimiento
+- **Auto-unsubscribe**: Prevención de memory leaks con `takeUntilDestroyed()`
+- **Track en @for**: Optimización de rendering de listas
+- **Control Flow Moderno**: Uso de `@if`, `@for`, `@switch`
 
-## Tecnologías
+### Seguridad
+- **Guards de Autenticación**: Protección de rutas
+- **Interceptores HTTP**: Manejo automático de tokens y errores
+- **Validación de Formularios**: Validators personalizados
+- **TypeScript Strict Mode**: Tipado fuerte
+- **Documentación de Seguridad**: Guía completa en `docs/SECURITY.md`
+
+## 🛠 Tecnologías
 
 - **Angular 20.3**: Framework principal
 - **TypeScript 5.9**: Tipado estático
@@ -25,13 +40,13 @@ Este proyecto fue generado con [Angular CLI](https://github.com/angular/angular-
 - **RxJS 7.8**: Programación reactiva
 - **ESLint & Prettier**: Calidad de código
 
-## Requisitos Previos
+## 📋 Requisitos Previos
 
 - Node.js 18.x o superior
 - npm 9.x o superior
 - Backend API corriendo en `http://localhost:3000`
 
-## Instalación
+## 🚀 Instalación
 
 ```bash
 # Clonar el repositorio
@@ -42,7 +57,28 @@ cd car-inventory-frontend
 npm install
 ```
 
-## Configuración
+## ⚙️ Configuración
+
+### Path Aliases
+
+El proyecto utiliza path aliases de TypeScript para imports más limpios:
+
+```typescript
+// En lugar de:
+import { AuthService } from '../../core/services';
+
+// Usa:
+import { AuthService } from '@core/services';
+```
+
+**Aliases disponibles:**
+- `@app/*` - Root de la aplicación
+- `@core/*` - Servicios, modelos, guards, interceptores
+- `@shared/*` - Componentes compartidos, pipes, directivas
+- `@features/*` - Componentes de features/páginas
+- `@environments/*` - Configuración de entornos
+
+Ver más detalles en: `docs/PATH_ALIASES_MIGRATION.md`
 
 ### Variables de Entorno
 
@@ -265,6 +301,62 @@ export class ExampleComponent {
 ### Servicios
 - Usa `inject()` en lugar de constructor injection
 - Usa `providedIn: 'root'` para servicios singleton
+
+## 📈 Mejoras Recientes
+
+### Seguridad
+- ✅ Corregida importación de environment para producción
+- ✅ Documentación completa de headers de seguridad (CSP, HSTS, etc.)
+- ✅ Manejo mejorado de errores con notificaciones al usuario
+- 📄 Guía de migración a httpOnly cookies documentada
+
+### Performance
+- ✅ Implementado auto-unsubscribe con `takeUntilDestroyed()`
+- ✅ Optimización de re-renders con `track` en `@for`
+- ✅ Change Detection OnPush en todos los componentes
+
+### Experiencia de Usuario
+- ✅ Sistema global de notificaciones (success, error, warning, info)
+- ✅ Mejores mensajes de error
+- ✅ Notificación de sesión expirada
+
+**Ver más detalles:** `docs/MEJORAS_IMPLEMENTADAS.md`
+
+## 🔒 Seguridad
+
+Para configurar correctamente la seguridad en producción, consulta:
+- **Guía completa:** `docs/SECURITY.md`
+- Configuración de headers HTTP de seguridad
+- CSP, CORS, HSTS, Rate Limiting
+- Checklist pre-producción
+
+## 📚 Documentación Adicional
+
+- **API Reference**: `docs/API_REFERENCE.md`
+- **Guía de Seguridad**: `docs/SECURITY.md`
+- **Mejoras Implementadas**: `docs/MEJORAS_IMPLEMENTADAS.md`
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+## 👨‍💻 Autor
+
+**Tu Nombre** - [GitHub](https://github.com/yourusername)
+
+---
+
+**Última actualización:** 16 de octubre de 2025  
+**Versión de Angular:** 20.3.0  
+**Estado:** ✅ Optimizado y en producción
 
 ```typescript
 import { inject, Injectable } from '@angular/core';

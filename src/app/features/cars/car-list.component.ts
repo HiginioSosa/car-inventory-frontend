@@ -1,11 +1,12 @@
-import { Component, signal, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, signal, inject, OnInit, ChangeDetectionStrategy, DestroyRef } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { debounceTime } from 'rxjs';
-import { CarsService, CatalogService } from '../../core/services';
-import { Car, CarFilters, Pagination } from '../../core/models';
-import { CapitalizePipe } from '../../shared/pipes/capitalize.pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CarsService, CatalogService } from '@core/services';
+import { Car, CarFilters, Pagination } from '@core/models';
+import { CapitalizePipe } from '@shared/pipes/capitalize.pipe';
 
 @Component({
   selector: 'app-car-list',
@@ -17,6 +18,7 @@ export class CarListComponent implements OnInit {
   private readonly carsService = inject(CarsService);
   private readonly catalogService = inject(CatalogService);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly cars = signal<Car[]>([]);
   protected readonly pagination = signal<Pagination | null>(null);
@@ -61,44 +63,56 @@ export class CarListComponent implements OnInit {
   }
 
   private loadCatalogs(): void {
-    this.catalogService.getBrands().subscribe({
-      next: (response) => {
-        this.brands.set(response.data.marcas);
-      },
-    });
+    this.catalogService
+      .getBrands()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.brands.set(response.data.marcas);
+        },
+      });
 
-    this.catalogService.getYears().subscribe({
-      next: (response) => {
-        this.years.set(response.data.anios);
-      },
-    });
+    this.catalogService
+      .getYears()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.years.set(response.data.anios);
+        },
+      });
   }
 
   private setupFilterListeners(): void {
     // Inicialmente deshabilitar el control de modelo
     this.filterForm.get('modelo')?.disable();
 
-    this.filterForm.get('marca')?.valueChanges.subscribe((marca) => {
-      if (marca) {
-        this.catalogService.getModels(marca).subscribe({
-          next: (response) => {
-            this.models.set(response.data.modelos);
-            this.filterForm.get('modelo')?.enable();
-          },
-        });
-      } else {
-        this.models.set([]);
-        this.filterForm.patchValue({ modelo: '' });
-        this.filterForm.get('modelo')?.disable();
-      }
-    });
+    this.filterForm
+      .get('marca')
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((marca) => {
+        if (marca) {
+          this.catalogService
+            .getModels(marca)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (response) => {
+                this.models.set(response.data.modelos);
+                this.filterForm.get('modelo')?.enable();
+              },
+            });
+        } else {
+          this.models.set([]);
+          this.filterForm.patchValue({ modelo: '' });
+          this.filterForm.get('modelo')?.disable();
+        }
+      });
 
     // Escuchar cambios solo en los filtros (no en page y limit)
     const filterControls = ['marca', 'modelo', 'anio', 'minPrecio', 'maxPrecio', 'color'];
     filterControls.forEach((controlName) => {
       this.filterForm
         .get(controlName)
-        ?.valueChanges.pipe(debounceTime(500))
+        ?.valueChanges.pipe(debounceTime(500), takeUntilDestroyed(this.destroyRef))
         .subscribe(() => {
           // Resetear a página 1 cuando cambian los filtros
           this.filterForm.patchValue({ page: 1 }, { emitEvent: false });
@@ -112,16 +126,19 @@ export class CarListComponent implements OnInit {
 
     const filters = this.buildFilters();
 
-    this.carsService.getCars(filters).subscribe({
-      next: (response) => {
-        this.cars.set(response.data.data);
-        this.pagination.set(response.data.pagination);
-        this.isLoading.set(false);
-      },
-      error: () => {
-        this.isLoading.set(false);
-      },
-    });
+    this.carsService
+      .getCars(filters)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.cars.set(response.data.data);
+          this.pagination.set(response.data.pagination);
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.isLoading.set(false);
+        },
+      });
   }
 
   private buildFilters(): CarFilters {

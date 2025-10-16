@@ -2,8 +2,8 @@ import { Component, signal, inject, ChangeDetectionStrategy } from '@angular/cor
 import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services';
-import { LoginRequest } from '../../core/models';
+import { AuthService } from '@core/services';
+import { LoginRequest } from '@core/models';
 
 @Component({
   selector: 'app-login',

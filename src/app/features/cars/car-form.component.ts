@@ -5,12 +5,14 @@ import {
   OnInit,
   ChangeDetectionStrategy,
   computed,
+  DestroyRef,
 } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CarsService, CatalogService } from '../../core/services';
-import { Car, CreateCarRequest, UpdateCarRequest } from '../../core/models';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CarsService, CatalogService } from '@core/services';
+import { Car, CreateCarRequest, UpdateCarRequest } from '@core/models';
 
 @Component({
   selector: 'app-car-form',
@@ -23,6 +25,7 @@ export class CarFormComponent implements OnInit {
   private readonly catalogService = inject(CatalogService);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly isLoading = signal(false);
   protected readonly errorMessage = signal('');
@@ -60,45 +63,57 @@ export class CarFormComponent implements OnInit {
   }
 
   private loadCatalogs(): void {
-    this.catalogService.getBrands().subscribe({
-      next: (response) => {
-        this.brands.set(response.data.marcas);
-      },
-    });
+    this.catalogService
+      .getBrands()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.brands.set(response.data.marcas);
+        },
+      });
 
-    this.catalogService.getYears().subscribe({
-      next: (response) => {
-        this.years.set(response.data.anios);
-      },
-    });
+    this.catalogService
+      .getYears()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          this.years.set(response.data.anios);
+        },
+      });
   }
 
   private setupMarcaListener(): void {
-    this.carForm.get('marca')?.valueChanges.subscribe((marca) => {
-      const modeloControl = this.carForm.get('modelo');
+    this.carForm
+      .get('marca')
+      ?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((marca) => {
+        const modeloControl = this.carForm.get('modelo');
 
-      if (marca) {
-        this.catalogService.getModels(marca).subscribe({
-          next: (response) => {
-            this.models.set(response.data.modelos);
+        if (marca) {
+          this.catalogService
+            .getModels(marca)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+              next: (response) => {
+                this.models.set(response.data.modelos);
 
-            // Enable modelo field
-            modeloControl?.enable();
+                // Enable modelo field
+                modeloControl?.enable();
 
-            // Reset modelo if not in the new list
-            const currentModelo = modeloControl?.value;
-            if (currentModelo && !response.data.modelos.includes(currentModelo)) {
-              this.carForm.patchValue({ modelo: '' });
-            }
-          },
-        });
-      } else {
-        this.models.set([]);
-        this.carForm.patchValue({ modelo: '' });
-        // Disable modelo field when no brand is selected
-        modeloControl?.disable();
-      }
-    });
+                // Reset modelo if not in the new list
+                const currentModelo = modeloControl?.value;
+                if (currentModelo && !response.data.modelos.includes(currentModelo)) {
+                  this.carForm.patchValue({ modelo: '' });
+                }
+              },
+            });
+        } else {
+          this.models.set([]);
+          this.carForm.patchValue({ modelo: '' });
+          // Disable modelo field when no brand is selected
+          modeloControl?.disable();
+        }
+      });
   }
 
   private loadCar(id: string): void {
